@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tienda Dummy</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <h1>Tienda Dummy</h1>
+
+        <section id="filtro">
+            <div>
+                <label for="categoria">Categoría</label>
+                <select id="categoria">
+                    <option value="">Todas</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="precioMax">Precio</label>
+                <input type="number" id="precioMax" min="0" />
+            </div>
+
+            <div>
+                <label for="nombre">¿Qué buscas?</label>
+                <input type="text" id="nombre" />
+                <button id="btnBuscar" type="button">🔍</button>
+            </div>
+
+            <div>
+                <button id="btnTodos" type="button">Ver todos los productos</button>
+            </div>
+        </section>
+
+        <div id="productos"></div>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>
