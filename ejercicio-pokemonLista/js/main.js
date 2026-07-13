@@ -1,37 +1,32 @@
-async function obtenerPokemon() {
-  try {
-    const respuesta = await fetch("https://pokeapi.co/api/v2/pokemon?limit=12"); // Pedimos la lista de Pokémon.
+async function obtenerPokemons() {
+	const contenedor = document.querySelector("#galeria");
+	contenedor.innerHTML = "<p>Cargando Pokémon...</p>";
 
-    const datos = await respuesta.json(); // Pasamos la respuesta a JSON.
+	try {
+		const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=10");
+		const data = await res.json();
 
-    datos.results.forEach (async(element) => { // Recorremos cada Pokémon de la lista.
-        const datosPokemon =  await fetch (element.url) // Pedimos los datos de este Pokémon.
+		const promesas = data.results.map(async function(pokemon) {
+			const respuestaDetalle = await fetch(pokemon.url);
+			return respuestaDetalle.json();
+		});
 
-        const respuesta2 = await datosPokemon.json(); // Convertimos esos datos a JSON.
-      
-    console.log(respuesta2); // Miramos los datos en la consola.
+		const detalles = await Promise.all(promesas);
 
-    const tarjeta = document.createElement("div"); // Creamos una tarjeta para mostrar el Pokémon.
-    tarjeta.classList.add("tarjeta");
+		contenedor.innerHTML = "";
 
-    const parrafo = document.createElement("p"); // Creamos el texto con el nombre.
-    parrafo.textContent = respuesta2.name;
-
-    const contenedor = document.querySelector(".container"); // Buscamos el contenedor de la página.
-
-    const imagen = document.createElement("img"); // Creamos la imagen del Pokémon.
-    imagen.src = respuesta2.sprites.front_default;
-
-    tarjeta.appendChild(parrafo); // Metemos el nombre dentro de la tarjeta.
-    tarjeta.appendChild(imagen); // Metemos la imagen dentro de la tarjeta.
-
-    contenedor.appendChild(tarjeta); // Añadimos la tarjeta al contenedor.
-
-    });
-  } catch (error) {
-    console.error("No se pueden cargar los datos:", error.message); // Si algo falla, mostramos un mensaje.
-    alert("No se pueden cargar los datos");
-  }
+		detalles.forEach(function(pokemon) {
+			const card = document.createElement("div");
+			card.className = "pokemon-card";
+			card.innerHTML = `
+				<img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+				<div class="nombre">${pokemon.name}</div>
+			`;
+			contenedor.appendChild(card);
+		});
+	} catch (error) {
+		console.error("Error:", error);
+		contenedor.innerHTML = "<p>Error al cargar los Pokémon</p>";
+	}
 }
-
-obtenerPokemon(); // Llamamos a la función para que se ejecute.
+obtenerPokemons();

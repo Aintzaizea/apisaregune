@@ -1,68 +1,122 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+html {
+    scroll-behavior: smooth;
+}
+
+body {
     min-height: 100vh;
-    background-color: rgb(245, 236, 232);
-    display: grid;
-    place-items: center;
     padding: 24px;
+    background:
+        radial-gradient(circle at top, rgba(255, 210, 74, 0.18), transparent 34%),
+        linear-gradient(180deg, rgb(9, 34, 80) 0%, rgb(8, 20, 44) 52%, rgb(5, 10, 25) 100%);
+    color: rgb(240, 248, 255);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-
-.container {
-    width: 100%;
-    max-width: 1280px;
+.app {
+    width: min(1200px, 100%);
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 16px;
-    gap: 20px;
-    align-items: center;
+    gap: 24px;
 }
 
-.tarjeta {
-    gap: 30px;
-    font-family: "Geist Pixel", sans-serif;
+.hero {
+    display: grid;
+    gap: 10px;
+    justify-items: center;
+    text-align: center;
+    padding: 20px;
+    border-radius: 22px;
+    background: rgba(12, 25, 44, 0.72);
+    border: 1px solid rgba(255, 232, 153, 0.12);
+    box-shadow:
+        0 16px 34px rgba(0, 0, 0, 0.22),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    backdrop-filter: blur(10px);
+}
+
+.hero-kicker {
+    font-size: 0.8rem;
     font-weight: 700;
-    font-size: 20px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgb(255, 226, 120);
+}
+
+h1 {
+    font-family: "Geist Pixel", monospace;
+    font-size: clamp(2.6rem, 6vw, 4.8rem);
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}
+
+.hero-copy {
+    max-width: 640px;
+    color: rgba(240, 248, 255, 0.84);
+    line-height: 1.5;
+}
+
+.galeria-pokemon {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+}
+
+.pokemon-card {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-width: 240px;
-    padding: 40px;
+    gap: 12px;
+    padding: 14px;
     border-radius: 20px;
-    box-shadow: 0 12px 30px rgba(130, 90, 80, 0.18);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    background: -webkit-linear-gradient(90deg,#e0c5bb,#f6ebe7,#f7f4f1,#f6ebe7,#e0c5bb); background: linear-gradient(90deg,#e0c5bb,#f6ebe7,#f7f4f1,#f6ebe7,#e0c5bb); 
-
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 226, 120, 0.14);
+    box-shadow:
+        0 12px 26px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    backdrop-filter: blur(8px);
 }
 
-
-
-.tarjeta p::first-letter {
-  text-transform: uppercase;
+.pokemon-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
 }
 
-@media (min-width: 1024px) {
-    .container {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        justify-content: center;
-        gap: 24px;
-        padding: 32px;
+.pokemon-card .nombre {
+    font-family: "Geist Pixel", monospace;
+    font-size: 1.1rem;
+    color: rgb(255, 240, 180);
+    text-transform: capitalize;
+}
+
+.pokemon-card p {
+    color: rgba(240, 248, 255, 0.9);
+    line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 16px;
     }
 
-    .tarjeta {
-        min-width: 0;
-        width: 100%;
+    .hero {
+        padding: 16px;
+    }
+
+    .galeria-pokemon {
+        grid-template-columns: 1fr;
     }
 }
-
-
 
 
 

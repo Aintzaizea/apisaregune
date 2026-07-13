@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Pokemon</title>
+        <title>Pokémon Lista</title>
         <link rel="stylesheet" href="css/style.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,7 +13,23 @@
         />
     </head>
     <body>
-        <div class="container"></div>
+        <main class="app">
+            <header class="hero">
+                <p class="hero-kicker">PokéDex visual</p>
+                <h1>Pokémon Lista</h1>
+                <p class="hero-copy">
+                    Una pequeña galería de los primeros Pokémon cargados desde
+                    la API.
+                </p>
+            </header>
+
+            <section
+                id="galeria"
+                class="galeria-pokemon"
+                aria-live="polite"
+                aria-label="Galería de Pokémon"
+            ></section>
+        </main>
         <script src="js/main.js"></script>
     </body>
 </html>
