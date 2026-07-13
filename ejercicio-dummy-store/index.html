@@ -20,35 +20,49 @@
         <main>
             <section id="filtro">
                 <div>
-                    <select id="categoria">
-                        <option value="">Categorías</option>
-                    </select>
                 </div>
+                <aside id="filtro" aria-label="Filtros de productos">
+                    <p class="filtro-titulo">Filtros</p>
+
+                    <label class="filtro-campo" for="categoria">
+                        <span>Categoría</span>
+                        <select id="categoria">
+                            <option value="">Categorías</option>
+                        </select>
+                    </label>
 
                 <div>
-                    <input
-                        type="number"
-                        id="precioMax"
-                        min="0"
-                        placeholder="Precio"
-                    />
                 </div>
+                    <label class="filtro-campo" for="precioMax">
+                        <span>Precio máximo</span>
+                        <input
+                            type="number"
+                            id="precioMax"
+                            min="0"
+                            placeholder="Ej. 50"
+                        />
+                    </label>
 
                 <div>
-                    <input
-                        type="text"
-                        id="nombre"
-                        placeholder="Buscar"
-                    />
-                    <button id="btnBuscar" type="button">🔍</button>
-                </div>
+                    <label class="filtro-campo" for="nombre">
+                        <span>Buscar producto</span>
+                        <input
+                            type="text"
+                            id="nombre"
+                            placeholder="Nombre, marca o palabra clave"
+                        />
+                    </label>
+
+                    <div class="filtro-acciones">
+                        <button id="btnBuscar" type="button">🔍</button>
 
                 <div>
                     <button id="btnTodos" type="button">
-                        Todos los productos
+                            Ver todos
                     </button>
                 </div>
             </section>
+                </aside>
 
             <div id="productos"></div>
         </main>
