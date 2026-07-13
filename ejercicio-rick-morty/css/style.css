@@ -1,114 +1,161 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
- body {
-    padding-top: 20px;
-    background-color: rgb(4, 4, 110);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    padding-bottom: 40px;
- }
-
- h1{
-    color: aliceblue;
-    font-family: "Bangers", system-ui;
-    font-size: 60px;
-    letter-spacing: 8px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
-    
- }
-
-#buscador {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   gap: 20px;
-}
- button{
-   font-family: Arial, Helvetica, sans-serif;
-   font-size: 14px;
-   font-weight: 700;
-   letter-spacing: 0.5px;
-   margin-top: 10px;
-   margin-bottom: 40px;
-   width: 100px; 
-   height: 32px;
-   border-radius: 10px;
-   border: 1px solid rgb(255, 255, 255);
-   color: rgb(4, 4, 110);
-   background: linear-gradient(135deg, rgb(255, 255, 255), rgb(189, 236, 255));
-   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-   cursor: pointer;
-   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-
-input {
-   margin-top: 10px;
-   padding: 10px;
-   border-radius: 20px;
-   width: 200px;
-   border: 1px solid rgb(4, 4, 110);
-   background-color: rgba(255, 255, 255, 0.98);
-   color: rgb(20, 20, 20);
-   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
-   transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-   outline: none;
-
+html {
+	scroll-behavior: smooth;
 }
 
-input:focus {
-   border-color: rgb(91, 203, 255);
-   box-shadow: 0 0 0 4px rgba(91, 203, 255, 0.35), 0 12px 24px rgba(0, 0, 0, 0.35);
-   transform: translateY(-1px);
+body {
+	min-height: 100vh;
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 24px;
+	background:
+		radial-gradient(circle at top, rgba(95, 255, 198, 0.18), transparent 36%),
+		linear-gradient(180deg, rgb(9, 18, 31) 0%, rgb(13, 31, 46) 45%, rgb(8, 13, 18) 100%);
+	color: rgb(240, 248, 247);
+	font-family: Arial, Helvetica, sans-serif;
 }
 
-h3{
-   
-   color: aliceblue;
-   text-align: center;
-   margin-bottom: 10px;
+.buscador {
+	width: 100%;
+	display: flex;
+	justify-content: center;
 }
 
-#resultado{
-   display: grid;
-   grid-template-columns: 1fr 1fr 1fr 1fr;
-   gap: 50px;
-   object-fit: cover;
-   
+.buscador form {
+	width: min(640px, 100%);
+	display: flex;
+	gap: 12px;
+	padding: 16px;
+	border-radius: 20px;
+	background: rgba(14, 24, 33, 0.72);
+	border: 1px solid rgba(126, 255, 213, 0.18);
+	box-shadow:
+		0 14px 30px rgba(0, 0, 0, 0.24),
+		0 0 0 1px rgba(126, 255, 213, 0.06) inset;
+	backdrop-filter: blur(10px);
 }
 
-.tarjeta {
-   background-color: rgba(123, 8, 177, 0.562);
-   border-radius: 16px;
-   padding: 14px;
-   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-   
+#input {
+	flex: 1;
+	min-width: 0;
+	padding: 14px 16px;
+	border: 1px solid rgba(126, 255, 213, 0.18);
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.96);
+	color: rgb(24, 28, 35);
+	font-size: 1rem;
+	outline: none;
+	box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-
-.tarjeta img {
-   width: 100%;
-   border-radius: 12px;
-   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+#input::placeholder {
+	color: rgb(109, 120, 126);
 }
 
-p{
-   margin-top: 10px;
-   color: aliceblue;
-   font-family: "Neucha", cursive;
-   font-size: 20px;
-   padding: 4px;
-      
+#input:focus {
+	border-color: rgb(91, 255, 196);
+	box-shadow:
+		0 0 0 4px rgba(91, 255, 196, 0.16),
+		0 12px 28px rgba(0, 0, 0, 0.18);
+	transform: translateY(-1px);
 }
 
-h3{
-   font-family: "Love Ya Like A Sister", cursive;
-   font-size: 20px;
+#button {
+	padding: 14px 18px;
+	border: none;
+	border-radius: 14px;
+	background: linear-gradient(135deg, rgb(91, 255, 196), rgb(154, 244, 98));
+	color: rgb(6, 17, 16);
+	font-weight: 800;
+	letter-spacing: 0.4px;
+	cursor: pointer;
+	box-shadow: 0 10px 24px rgba(91, 255, 196, 0.18);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
+#button:hover {
+	transform: translateY(-1px);
+	filter: brightness(1.03);
+	box-shadow: 0 14px 28px rgba(91, 255, 196, 0.24);
+}
+
+#button:active {
+	transform: translateY(0);
+}
+
+.contain {
+	width: min(1240px, 100%);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 20px;
+}
+
+.personaje {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 14px;
+	border-radius: 20px;
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(126, 255, 213, 0.14);
+	box-shadow:
+		0 10px 22px rgba(0, 0, 0, 0.24),
+		0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+	backdrop-filter: blur(8px);
+	overflow: hidden;
+}
+
+.personaje h2 {
+	min-height: 2.6em;
+	font-size: 1.15rem;
+	line-height: 1.1;
+	color: rgb(240, 248, 247);
+	text-align: center;
+	text-wrap: balance;
+}
+
+.personaje img {
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	border-radius: 16px;
+	border: 1px solid rgba(126, 255, 213, 0.12);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.personaje p {
+	font-size: 0.98rem;
+	line-height: 1.45;
+	color: rgba(240, 248, 247, 0.9);
+}
+
+.personaje p:last-child {
+	color: rgb(154, 244, 98);
+	font-weight: 700;
+}
+
+@media (max-width: 640px) {
+	body {
+		padding: 18px;
+	}
+
+	.buscador form {
+		flex-direction: column;
+	}
+
+	#button {
+		width: 100%;
+	}
+
+	.contain {
+		grid-template-columns: 1fr;
+	}
+}

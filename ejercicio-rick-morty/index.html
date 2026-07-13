@@ -1,27 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Rick & Morty</title>
-        <link rel="stylesheet" href="css/style.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Bangers&family=Love+Ya+Like+A+Sister&family=Neucha&display=swap"
-            rel="stylesheet"
-        />
-    </head>
-    <body>
-        <h1>Buscador de personajes</h1>
-
-        <form id="buscador">
-            <input type="text" id="inputNombre" />
-            <button type="submit">¡Dale!</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="buscador">
+        <form>
+            <input type="text" id="input" placeholder="Buscar personaje..." autocomplete="on">
+            <button id="button">Buscar</button>
         </form>
-
-        <div id="resultado"></div>
-
-        <script src="js/main.js"></script>
-    </body>
+    </div>
+    <div class="contain"></div>
+    <script src="js/main.js"></script>
+</body>
 </html>
