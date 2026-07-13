@@ -3,19 +3,25 @@ const inputPrecio = document.querySelector("#precioMax");
 const inputNombre = document.querySelector("#nombre");
 const btnBuscar = document.querySelector("#btnBuscar");
 const todosProductos = document.querySelector("#btnTodos")
+function capitalizar(texto) {
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
 
 let categorias = [];
 let productos = [];
 const contenedor = document.querySelector("#productos");
 async function obtenerProductos () {
+    contenedor.innerHTML = "<p>Cargando productos</p>"; //mensaje mientras cargan productos
     try {
+       
         const respuesta = await fetch("https://dummyjson.com/products?limit=0");
         const datos = await respuesta.json();
         productos = datos.products;
+        
         productos.sort(function(a, b) {
         return b.rating - a.rating;
 });
-        pintarProductos(productos.slice(0, 10));
+        pintarProductos(productos.slice(0, 8));
         console.log(productos);
 
     } catch (error) {
@@ -27,12 +33,12 @@ function pintarProductos(lista) {
     contenedor.innerHTML = "";
     lista.forEach(function(producto) {
         contenedor.innerHTML += 
-        `<div class="pintado">
+        `<a class="pintado" href="" target="_self">
             <h3>${producto.title}</h3>
-            <img src="${producto.thumbnail}" alt="${producto.thumbnail}">
-            <p>Precio: ${producto.price}</p>
-            <p>Categoría: ${producto.category}</p>
-        </div>`
+            <img src="${producto.thumbnail}" alt="${producto.title}">
+            <p>${producto.price} €</p>
+            <p>${capitalizar(producto.category)}</p>
+        </a>`
     });
 }
 

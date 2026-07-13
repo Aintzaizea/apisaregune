@@ -4,35 +4,54 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Tienda Dummy</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+            rel="stylesheet"
+        />
         <link rel="stylesheet" href="css/style.css" />
     </head>
     <body>
-        <h1>Tienda Dummy</h1>
+        <header>
+            <a href="#"><img src="img/logodummy.png" alt="logodummy" /></a>
+        </header>
 
-        <section id="filtro">
-            <div>
-                
-                <select id="categoria">
-                    <option value="">Categorías</option>
-                </select>
-            </div>
+        <main>
+            <section id="filtro">
+                <div>
+                    <select id="categoria">
+                        <option value="">Categorías</option>
+                    </select>
+                </div>
 
-            <div>
-             
-                <input type="number" id="precioMax" min="0"  placeholder="Precio"/>
-            </div>
+                <div>
+                    <input
+                        type="number"
+                        id="precioMax"
+                        min="0"
+                        placeholder="Precio"
+                    />
+                </div>
 
-            <div>
-                <input type="text" id="nombre" placeholder="¿Qué estás buscando?" />
-                <button id="btnBuscar" type="button">🔍</button>
-            </div>
+                <div>
+                    <input
+                        type="text"
+                        id="nombre"
+                        placeholder="Buscar"
+                    />
+                    <button id="btnBuscar" type="button">🔍</button>
+                </div>
 
-            <div>
-                <button id="btnTodos" type="button">Todos los productos</button>
-            </div>
-        </section>
+                <div>
+                    <button id="btnTodos" type="button">
+                        Todos los productos
+                    </button>
+                </div>
+            </section>
 
-        <div id="productos"></div>
+            <div id="productos"></div>
+        </main>
 
         <script src="js/main.js"></script>
     </body>
