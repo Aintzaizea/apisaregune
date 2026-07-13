@@ -18,51 +18,40 @@
         </header>
 
         <main>
-            <section id="filtro">
-                <div>
+            <aside id="filtro" aria-label="Filtros de productos">
+                
+
+                <label class="filtro-campo" for="categoria">
+                    <span>Categoría</span>
+                    <select id="categoria">
+                        <option value="">Categorías</option>
+                    </select>
+                </label>
+
+                <label class="filtro-campo" for="precioMax">
+                    <span>Precio máximo</span>
+                    <input
+                        type="number"
+                        id="precioMax"
+                        min="0"
+                        placeholder="Ej. 50"
+                    />
+                </label>
+
+                <label class="filtro-campo" for="nombre">
+                    <span>Buscar producto</span>
+                    <input
+                        type="text"
+                        id="nombre"
+                        placeholder="Palabra clave"
+                    />
+                </label>
+
+                <div class="filtro-acciones">
+                    <button id="btnBuscar" type="button">🔍</button>
+                    <button id="btnTodos" type="button">Ver todos</button>
                 </div>
-                <aside id="filtro" aria-label="Filtros de productos">
-                    <p class="filtro-titulo">Filtros</p>
-
-                    <label class="filtro-campo" for="categoria">
-                        <span>Categoría</span>
-                        <select id="categoria">
-                            <option value="">Categorías</option>
-                        </select>
-                    </label>
-
-                <div>
-                </div>
-                    <label class="filtro-campo" for="precioMax">
-                        <span>Precio máximo</span>
-                        <input
-                            type="number"
-                            id="precioMax"
-                            min="0"
-                            placeholder="Ej. 50"
-                        />
-                    </label>
-
-                <div>
-                    <label class="filtro-campo" for="nombre">
-                        <span>Buscar producto</span>
-                        <input
-                            type="text"
-                            id="nombre"
-                            placeholder="Nombre, marca o palabra clave"
-                        />
-                    </label>
-
-                    <div class="filtro-acciones">
-                        <button id="btnBuscar" type="button">🔍</button>
-
-                <div>
-                    <button id="btnTodos" type="button">
-                            Ver todos
-                    </button>
-                </div>
-            </section>
-                </aside>
+            </aside>
 
             <div id="productos"></div>
         </main>
