@@ -3,13 +3,27 @@ const ejer2 = document.querySelector ("#ejer2");
 const ejer3 = document.querySelector ("#ejer3");
 const ejer4 = document.querySelector ("#ejer4");
 
+let ultimaPeticion = 0;
+
+async function fetchControlado(url, opciones) {
+  const ahora = Date.now();
+  const tiempoDesdeUltima = ahora - ultimaPeticion;
+  const esperaMinima = 1000;
+
+  if (tiempoDesdeUltima < esperaMinima) {
+    await new Promise(resolve => setTimeout(resolve, esperaMinima - tiempoDesdeUltima));
+  }
+
+  ultimaPeticion = Date.now();
+  return fetch(url, opciones);
+}
 
 // EJERCICIO 1: Geocodificar una dirección
 async function geoLocalizacion() {
   try {
     const URL = "https://nominatim.openstreetmap.org/search?format=json&q=Plaza+de+la+Virgen+Blanca+1+Vitoria-Gasteiz";
     
-    const respuesta = await fetch (URL, {
+    const respuesta = await fetchControlado (URL, {
         headers: {
             'User-Agent': 'MiAppEducativa/1.0 (contacto@miapp.com)',
             'Accept-Language': 'es'
@@ -39,7 +53,7 @@ async function geoInversa() {
     try {
         const URL2 = "https://nominatim.openstreetmap.org/reverse?format=json&lat=42.8467&lon=-2.6734";
         
-        const respuesta2 = await fetch (URL2, {
+        const respuesta2 = await fetchControlado (URL2, {
             headers: {
                 'User-Agent': 'MiAppEducativa/1.0 (contacto@miapp.com)',
                 'Accept-Language': 'es'
@@ -95,4 +109,30 @@ const leaflet = document.querySelector ("#mapaLeaflet3");
 const busqueda3 = document.querySelector ("#busqueda");
 const boton3 = document.querySelector ("#botonBuscar3");
 
+boton3.addEventListener("click", async () => {
+    const direccion = busqueda3.value;
+    console.log(direccion);
+    
+try {
+    const URL3 = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
+
+    const respuesta3 = await fetchControlado (URL3, {
+        headers: {
+            'User-Agent': 'MiAppEducativa/1.0 (contacto@miapp.com)',
+            'Accept-Language': 'es'
+        }
+    }); 
+    if (respuesta3.status === 429) {
+            throw new Error("Límite de peticiones de la API excedido (429).");
+        }
+    
+        const datos3 = await respuesta3.json();
+        const resultado3 = datos3[0];
+        console.log("Ejercicio 3 correcto:", datos3);
+
+} catch (error) {
+        console.error ("Error en Ejercicio 3:", error);
+    }
+
+});
 
