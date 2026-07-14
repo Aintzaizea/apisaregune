@@ -36,6 +36,8 @@ async function geoLocalizacion() {
     }
 
     const datos = await respuesta.json();
+    console.log(datos);
+    
     const resultado = datos[0];
     
     console.log("Ejercicio 1 correcto:", resultado);
@@ -65,6 +67,7 @@ async function geoInversa() {
         }
 
         const datos2 = await respuesta2.json();
+        console.log(datos2);
         console.log("Ejercicio 2 correcto:", datos2);
     
         // Controlamos que no falle si la API cambia 'city' por 'town' o 'village'
@@ -100,7 +103,7 @@ async function iniciarEjercicios() {
 }
 
 // Única llamada para arrancar tu aplicación
-iniciarEjercicios();
+//iniciarEjercicios();
 
 
 // EJERCICIO 3: Buscador de lugares con Nominatim
@@ -108,9 +111,10 @@ const result3 = document.querySelector ("#resultado3");
 const leaflet = document.querySelector ("#mapaLeaflet3");
 const busqueda3 = document.querySelector ("#busqueda");
 const boton3 = document.querySelector ("#botonBuscar3");
+let mapa3 = null;
 
 boton3.addEventListener("click", async () => {
-    const direccion = busqueda3.value;
+    const direccion = busqueda3.value.trim();
     console.log(direccion);
     
 try {
@@ -127,11 +131,27 @@ try {
         }
     
         const datos3 = await respuesta3.json();
+        console.log(datos3);
         const resultado3 = datos3[0];
         console.log("Ejercicio 3 correcto:", datos3);
+        result3.innerHTML = `<div class="geo3">
+                                <p>Dirección: ${resultado3.display_name} </p> 
+                                <p>Longitud: ${resultado3.lon}</p> 
+                                <p>Latitud: ${resultado3.lat} </p>                
+                            </div>`;
+        if (mapa3 !== null) { mapa3.remove(); }
+        mapa3 = L.map('mapaLeaflet3').setView([resultado3.lat, resultado3.lon], 13);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(mapa3);
+
+            L.marker([resultado3.lat, resultado3.lon]).addTo(mapa3);
+        
 
 } catch (error) {
         console.error ("Error en Ejercicio 3:", error);
+        result3.innerHTML = `<div class="error" style="color: red;">Error 3: ${error.message}</div>`;
     }
 
 });
