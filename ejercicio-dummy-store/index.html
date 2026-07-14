@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,8 +19,6 @@
 
         <main>
             <aside id="filtro" aria-label="Filtros de productos">
-                
-
                 <label class="filtro-campo" for="categoria">
                     <span>Categoría</span>
                     <select id="categoria">
@@ -34,7 +32,7 @@
                         type="number"
                         id="precioMax"
                         min="0"
-                        placeholder="Ej. 50"
+                        placeholder="50"
                     />
                 </label>
 
@@ -53,7 +51,19 @@
                 </div>
             </aside>
 
-            <div id="productos"></div>
+            <section id="catalogo" aria-label="Listado de productos">
+                <div id="productos" aria-live="polite"></div>
+
+                <div id="paginacion" aria-label="Paginación de productos">
+                    <button id="btnPrev" type="button">Anterior</button>
+                    <div
+                        id="paginasNumeros"
+                        aria-label="Seleccionar página"
+                    ></div>
+                    <span id="paginaInfo">Página 1 de 1</span>
+                    <button id="btnNext" type="button">Siguiente</button>
+                </div>
+            </section>
         </main>
 
         <script src="js/main.js"></script>

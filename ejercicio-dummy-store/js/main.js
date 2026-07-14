@@ -1,93 +1,333 @@
-const selectCategoria = document.querySelector("#categoria");
-const inputPrecio = document.querySelector("#precioMax");
-const inputNombre = document.querySelector("#nombre");
-const btnBuscar = document.querySelector("#btnBuscar");
-const todosProductos = document.querySelector("#btnTodos")
-function capitalizar(texto) {
+const URL_PRODUCTOS = "https://dummyjson.com/products?limit=200";
+const URL_CATEGORIAS = "https://dummyjson.com/products/categories";
+
+// Estado global de la app.
+const estado = {
+    categorias: [],
+    productos: [],
+    productosVisibles: [],
+    paginaActual: 1,
+    productosPorPagina: 8
+};
+
+// Referencias a elementos del DOM.
+const ui = {
+    logo: document.querySelector("header a"),
+    selectCategoria: document.querySelector("#categoria"),
+    inputPrecio: document.querySelector("#precioMax"),
+    inputNombre: document.querySelector("#nombre"),
+    btnBuscar: document.querySelector("#btnBuscar"),
+    btnTodos: document.querySelector("#btnTodos"),
+    contenedor: document.querySelector("#productos"),
+    paginacion: document.querySelector("#paginacion"),
+    btnPrev: document.querySelector("#btnPrev"),
+    btnNext: document.querySelector("#btnNext"),
+    paginasNumeros: document.querySelector("#paginasNumeros"),
+    paginaInfo: document.querySelector("#paginaInfo")
+};
+
+// Normaliza texto para buscar sin problemas de mayusculas, tildes o espacios.
+function normalizarTexto(texto = "") {
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
+
+// Pone la primera letra en mayuscula.
+function capitalizar(texto = "") {
     return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 
-let categorias = [];
-let productos = [];
-const contenedor = document.querySelector("#productos");
-async function obtenerProductos () {
-    contenedor.innerHTML = "<p>Cargando productos</p>"; //mensaje mientras cargan productos
-    try {
-       
-        const respuesta = await fetch("https://dummyjson.com/products?limit=0");
-        const datos = await respuesta.json();
-        productos = datos.products;
-        
-        productos.sort(function(a, b) {
-        return b.rating - a.rating;
-});
-        pintarProductos(productos.slice(0, 8));
-        console.log(productos);
+// Muestra mensajes como "Cargando" o "Sin resultados".
+function mostrarEstado(mensaje, clase) {
+    ui.contenedor.innerHTML = `<p class="${clase}">${mensaje}</p>`;
+}
 
-    } catch (error) {
-        console.error("No se pueden cargar los datos", error.message);
+// Crea el HTML de cada tarjeta de producto.
+function crearTarjetaProducto(producto) {
+    const titulo = producto.title || "Producto";
+    const miniatura = producto.thumbnail || "";
+    const precio = Number(producto.price);
+
+    return `
+        <a class="pintado" href="#" aria-label="Ver ${titulo}">
+            <h3>${titulo}</h3>
+            <img src="${miniatura}" alt="${titulo}">
+            <p>${Number.isFinite(precio) ? precio : "-"} €</p>
+            <p>${capitalizar(producto.category)}</p>
+        </a>
+    `;
+}
+
+// Pinta productos y muestra/oculta paginacion segun haya datos.
+function renderizarProductos(lista) {
+    if (!Array.isArray(lista) || lista.length === 0) {
+        mostrarEstado("No hay resutados de búsqueda", "sin-resultados");
+        ui.paginacion.style.display = "none";
+        return;
     }
 
+    ui.contenedor.innerHTML = lista.map(crearTarjetaProducto).join("");
+    ui.paginacion.style.display = "flex";
 }
-function pintarProductos(lista) {
-    contenedor.innerHTML = "";
-    lista.forEach(function(producto) {
-        contenedor.innerHTML += 
-        `<a class="pintado" href="" target="_self">
-            <h3>${producto.title}</h3>
-            <img src="${producto.thumbnail}" alt="${producto.title}">
-            <p>${producto.price} €</p>
-            <p>${capitalizar(producto.category)}</p>
-        </a>`
+
+// Calcula cuantas paginas hay en total.
+function obtenerTotalPaginas() {
+    return Math.max(1, Math.ceil(estado.productosVisibles.length / estado.productosPorPagina));
+}
+
+// Devuelve solo los productos de la pagina actual.
+function obtenerProductosDePagina() {
+    const inicio = (estado.paginaActual - 1) * estado.productosPorPagina;
+    const fin = inicio + estado.productosPorPagina;
+    return estado.productosVisibles.slice(inicio, fin);
+}
+
+// Actualiza texto y botones de la barra de paginacion.
+function actualizarControlesPaginacion() {
+    const totalPaginas = obtenerTotalPaginas();
+
+    ui.paginaInfo.textContent = `Página ${estado.paginaActual} de ${totalPaginas}`;
+    ui.btnPrev.disabled = estado.paginaActual === 1;
+    ui.btnNext.disabled = estado.paginaActual === totalPaginas;
+    renderizarBotonesPagina(totalPaginas);
+}
+
+// Dibuja los botones numericos (1, 2, 3...).
+function renderizarBotonesPagina(totalPaginas) {
+    const botones = [];
+
+    for (let numeroPagina = 1; numeroPagina <= totalPaginas; numeroPagina += 1) {
+        const claseActiva = numeroPagina === estado.paginaActual ? "activa" : "";
+
+        botones.push(
+            `<button class="btn-pagina ${claseActiva}" type="button" data-page="${numeroPagina}">${numeroPagina}</button>`
+        );
+    }
+
+    ui.paginasNumeros.innerHTML = botones.join("");
+}
+
+// Render completo de la pagina actual.
+function renderizarPaginaActual() {
+    renderizarProductos(obtenerProductosDePagina());
+    actualizarControlesPaginacion();
+}
+
+// Cambia el listado visible y reinicia pagina cuando hace falta.
+function actualizarListadoVisible(lista, reiniciarPagina = true) {
+    estado.productosVisibles = Array.isArray(lista) ? lista : [];
+
+    if (reiniciarPagina) {
+        estado.paginaActual = 1;
+    }
+
+    const totalPaginas = obtenerTotalPaginas();
+    if (estado.paginaActual > totalPaginas) {
+        estado.paginaActual = totalPaginas;
+    }
+
+    renderizarPaginaActual();
+}
+
+// Lee los valores actuales del formulario de filtros.
+function obtenerDatosFiltros() {
+    return {
+        categoria: normalizarTexto(ui.selectCategoria.value),
+        precioMaximo: parseInt(ui.inputPrecio.value, 10),
+        nombre: normalizarTexto(ui.inputNombre.value)
+    };
+}
+
+// Filtra productos por categoria, precio maximo y nombre.
+function filtrarProductos(productos, filtros) {
+    return productos.filter(function(producto) {
+        const titulo = normalizarTexto(producto.title);
+        const categoriaProducto = normalizarTexto(producto.category);
+        const cumpleCategoria = filtros.categoria === "" || filtros.categoria === categoriaProducto;
+        const cumplePrecio = Number.isNaN(filtros.precioMaximo) || producto.price <= filtros.precioMaximo;
+        const cumpleNombre = filtros.nombre === "" || titulo.includes(filtros.nombre);
+
+        return cumpleCategoria && cumplePrecio && cumpleNombre;
     });
 }
 
+// Aplica filtros y actualiza la rejilla paginada.
 function aplicarFiltros() {
-    const categoriaSeleccionada = selectCategoria.value;
-    const precioMaximo = parseInt(inputPrecio.value);
-    const nombreBuscado = inputNombre.value;
-    
+    const filtros = obtenerDatosFiltros();
+    const resultado = filtrarProductos(estado.productos, filtros);
 
-    const resultado = productos.filter(function(producto) {
-            return (categoriaSeleccionada === "" || categoriaSeleccionada === producto.category) 
-            && (isNaN(precioMaximo) || producto.price <= precioMaximo)
-            && (nombreBuscado === "" || producto.title.toLowerCase().includes(nombreBuscado.toLowerCase()));
-    }); 
-    
-    pintarProductos(resultado);       
+    actualizarListadoVisible(resultado);
+
+    return {
+        resultados: resultado.length,
+        nombreBuscado: filtros.nombre
+    };
 }
 
-selectCategoria.addEventListener("change", aplicarFiltros);
-inputPrecio.addEventListener("input", aplicarFiltros);
-btnBuscar.addEventListener("click", function() {
-    aplicarFiltros();
-    inputNombre.value = "";
-});
-todosProductos.addEventListener("click", function() {
-    productos.sort(function(a, b) {
+// Limpia todos los campos de filtros.
+function limpiarFiltros() {
+    ui.selectCategoria.value = "";
+    ui.inputPrecio.value = "";
+    ui.inputNombre.value = "";
+}
+
+// Ordena por mejor valoracion (descendente).
+function ordenarPorRatingDesc(lista) {
+    return [...lista].sort(function(a, b) {
+        return b.rating - a.rating;
+    });
+}
+
+// Ordena alfabeticamente por nombre.
+function ordenarPorNombreAsc(lista) {
+    return [...lista].sort(function(a, b) {
         return a.title.localeCompare(b.title);
     });
-    pintarProductos(productos);
-});
+}
 
+// Vuelve a la vista principal (destacados con paginacion).
+function mostrarDestacados() {
+    limpiarFiltros();
+    actualizarListadoVisible(estado.productos);
+}
 
+// Wrapper de fetch con control de errores HTTP.
+async function obtenerJson(url) {
+    const respuesta = await fetch(url);
 
-async function obtenerCategorias() {
+    if (!respuesta.ok) {
+        throw new Error(`Error HTTP ${respuesta.status}`);
+    }
+
+    return respuesta.json();
+}
+
+// Carga categorias de la API y las pinta en el select.
+async function cargarCategorias() {
     try {
-        const respuesta = await fetch("https://dummyjson.com/products/categories");
-        const datos = await respuesta.json();
-        categorias = datos;
-        pintarCategorias();
+        const datos = await obtenerJson(URL_CATEGORIAS);
+        estado.categorias = Array.isArray(datos) ? datos : [];
+        renderizarCategorias(estado.categorias);
     } catch (error) {
         console.error("No se pueden cargar las categorías", error.message);
     }
 }
 
-function pintarCategorias() {
-    categorias.forEach(function(categoria) {
-        selectCategoria.innerHTML += `<option value="${categoria.slug}">${categoria.name}</option>`;
+// Rellena el select de categorias.
+function renderizarCategorias(categorias) {
+    ui.selectCategoria.innerHTML = '<option value="">Categorías</option>';
+
+    const opciones = categorias.map(function(categoria) {
+        if (typeof categoria === "string") {
+            return `<option value="${categoria}">${capitalizar(categoria)}</option>`;
+        }
+
+        return `<option value="${categoria.slug}">${categoria.name}</option>`;
+    });
+
+    ui.selectCategoria.innerHTML += opciones.join("");
+}
+
+// Carga productos desde API y prepara la vista inicial.
+async function cargarProductos() {
+    mostrarEstado("Cargando productos", "cargando-productos");
+
+    try {
+        const datos = await obtenerJson(URL_PRODUCTOS);
+        const productosApi = Array.isArray(datos.products) ? datos.products : [];
+
+        estado.productos = ordenarPorRatingDesc(productosApi);
+        mostrarDestacados();
+    } catch (error) {
+        console.error("No se pueden cargar los datos", error.message);
+        mostrarEstado("No se pudieron cargar los productos", "sin-resultados");
+    }
+}
+
+// Ejecuta la busqueda y limpia el input de nombre si hay resultados.
+function manejarBusqueda() {
+    const { resultados, nombreBuscado } = aplicarFiltros();
+
+    if (nombreBuscado !== "" && resultados > 0) {
+        ui.inputNombre.value = "";
+    }
+}
+
+// Registra todos los eventos de UI.
+function registrarEventos() {
+    ui.contenedor.addEventListener("click", function(evento) {
+        const enlace = evento.target.closest("a.pintado");
+
+        if (enlace && enlace.getAttribute("href") === "#") {
+            evento.preventDefault();
+        }
+    });
+
+    ui.selectCategoria.addEventListener("change", aplicarFiltros);
+    ui.inputPrecio.addEventListener("input", aplicarFiltros);
+
+    ui.btnBuscar.addEventListener("click", manejarBusqueda);
+
+    ui.inputNombre.addEventListener("keydown", function(evento) {
+        if (evento.key === "Enter") {
+            manejarBusqueda();
+        }
+    });
+
+    ui.btnTodos.addEventListener("click", function() {
+        limpiarFiltros();
+        actualizarListadoVisible(ordenarPorNombreAsc(estado.productos));
+    });
+
+    ui.btnPrev.addEventListener("click", function() {
+        if (estado.paginaActual > 1) {
+            estado.paginaActual -= 1;
+            renderizarPaginaActual();
+        }
+    });
+
+    ui.btnNext.addEventListener("click", function() {
+        const totalPaginas = obtenerTotalPaginas();
+
+        if (estado.paginaActual < totalPaginas) {
+            estado.paginaActual += 1;
+            renderizarPaginaActual();
+        }
+    });
+
+    ui.paginasNumeros.addEventListener("click", function(evento) {
+        const botonPagina = evento.target.closest("button[data-page]");
+
+        if (!botonPagina) {
+            return;
+        }
+
+        const paginaDestino = Number(botonPagina.dataset.page);
+
+        if (!Number.isInteger(paginaDestino)) {
+            return;
+        }
+
+        estado.paginaActual = paginaDestino;
+        renderizarPaginaActual();
+    });
+
+    ui.logo.addEventListener("click", function(evento) {
+        if (ui.logo.getAttribute("href") === "#") {
+            evento.preventDefault();
+        }
+
+        mostrarDestacados();
     });
 }
 
-obtenerCategorias();
-obtenerProductos ();
+// Punto de entrada de la app.
+async function iniciarApp() {
+    registrarEventos();
+    await Promise.all([cargarCategorias(), cargarProductos()]);
+}
+
+iniciarApp();
