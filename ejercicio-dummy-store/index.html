@@ -4,8 +4,10 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Tienda Dummy</title>
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
             rel="stylesheet"
@@ -15,24 +17,27 @@
     <body>
         <header>
             <a href="#"><img src="img/logodummy.png" alt="logodummy" /></a>
+            <div class="iconosDcha">
+                <a href="#"><img src="img/acount.png" alt="micuenta" /></a>
+                <a href="#"><img src="img/carrito.png" alt="carrito" /></a>
+            </div>
         </header>
 
         <main>
             <aside id="filtro" aria-label="Filtros de productos">
                 <label class="filtro-campo" for="categoria">
-                    <span>Categoría</span>
                     <select id="categoria">
                         <option value="">Categorías</option>
                     </select>
                 </label>
 
                 <label class="filtro-campo" for="precioMax">
-                    <span>Precio máximo</span>
+                    <span>Filtrar por precio</span>
                     <input
                         type="number"
                         id="precioMax"
                         min="0"
-                        placeholder="50"
+                        placeholder="0"
                     />
                 </label>
 
@@ -65,6 +70,35 @@
                 </div>
             </section>
         </main>
+        <div id="modal" class="oculto">
+            <div id="modalContenido">
+                <button id="btnCerrarModal" type="button" aria-label="Cerrar">
+                    ✕
+                </button>
+                <img id="modalImagen" src="" alt="" />
+                <h3 id="modalTitulo"></h3>
+                <p id="modalPrecio"></p>
+                <p id="modalDescripcion"></p>
+                <p id="modalCategoria"></p>
+            </div>
+        </div>
+
+        <footer>
+            <figure>
+                <figcaption>
+                    &copy; 2026 Dummy Store Todos los derechos reservados
+                </figcaption>
+            </figure>
+            <a href="http://www.youtube.es" class="logos" target="_blank"
+                ><img src="img/1492718751-youtube_83605.svg" alt="youtube"
+            /></a>
+            <a
+                href="https://www.whatsapp.com/?lang=es"
+                class="logos"
+                target="_blank"
+                ><img src="img/whatsapp-black_100119.svg" alt="whatsapp"
+            /></a>
+        </footer>
 
         <script src="js/main.js"></script>
     </body>

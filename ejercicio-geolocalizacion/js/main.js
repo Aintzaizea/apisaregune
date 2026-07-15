@@ -102,9 +102,6 @@ async function iniciarEjercicios() {
     await geoInversa(); // Ejecuta el 2 de forma segura
 }
 
-// Única llamada para arrancar tu aplicación
-//iniciarEjercicios();
-
 
 // EJERCICIO 3: Buscador de lugares con Nominatim
 const result3 = document.querySelector ("#resultado3");
@@ -132,6 +129,10 @@ try {
     
         const datos3 = await respuesta3.json();
         console.log(datos3);
+        if (datos3.length === 0) {
+            result3.innerHTML = `<div class="error" style="color: red;">No se ha encontrado ninguna dirección. Prueba con otra búsqueda.</div>`;
+            return; 
+}
         const resultado3 = datos3[0];
         console.log("Ejercicio 3 correcto:", datos3);
         result3.innerHTML = `<div class="geo3">
@@ -156,3 +157,9 @@ try {
 
 });
 
+
+//EJERCICIO 4 Comparativa de servicios de mapas
+
+
+// Única llamada para arrancar tu aplicación
+iniciarEjercicios();
