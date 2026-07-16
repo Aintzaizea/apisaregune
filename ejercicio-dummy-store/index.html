@@ -18,8 +18,13 @@
         <header>
             <a href="#"><img src="img/logodummy.png" alt="logodummy" /></a>
             <div class="iconosDcha">
-                <a href="#"><img src="img/acount.png" alt="micuenta" /></a>
-                <a href="#"><img src="img/carrito.png" alt="carrito" /></a>
+                <a href="#" title="Mi cuenta"><i data-lucide="user"></i></a>
+                <a href="#" title="Mi carrito"
+                    ><i data-lucide="shopping-cart"></i>
+                </a>
+                <a href="#" title="Te ayudamos"
+                    ><i data-lucide="message-circle-question-mark"></i
+                ></a>
             </div>
         </header>
 
@@ -83,17 +88,38 @@
             </div>
         </div>
 
+        <div id="chatbot" class="oculto">
+            <div id="chatbotContenido">
+                <button id="btnCerrarChat" type="button" aria-label="Cerrar">
+                    ✕
+                </button>
+                <header class="cabecera">
+                    <h2>Chat de ayuda</h2>
+                </header>
+                <div class="respuesta"></div>
+                <div class="preguntar">
+                    <textarea name="pregunta" id="pregunta"></textarea>
+                    <button id="btnEnviar" type="button">Enviar</button>
+                </div>
+            </div>
+        </div>
+
         <footer>
             <figure>
                 <figcaption>
                     &copy; 2026 Dummy Store Todos los derechos reservados
                 </figcaption>
             </figure>
-            <a href="http://www.youtube.es" class="logos" target="_blank"
+            <a
+                href="http://www.youtube.es"
+                title="YouTube"
+                class="logos"
+                target="_blank"
                 ><img src="img/1492718751-youtube_83605.svg" alt="youtube"
             /></a>
             <a
                 href="https://www.whatsapp.com/?lang=es"
+                title="WhatsApp"
                 class="logos"
                 target="_blank"
                 ><img src="img/whatsapp-black_100119.svg" alt="whatsapp"
@@ -101,5 +127,9 @@
         </footer>
 
         <script src="js/main.js"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <script>
+            lucide.createIcons();
+        </script>
     </body>
 </html>

@@ -35,7 +35,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 40px;
+    
 }
 
 header a {
@@ -51,15 +51,19 @@ header img {
 .iconosDcha {
     display: flex;
     align-items: center;
-    gap: 42px;
-    margin-right: 100px;
-}
-
-.iconosDcha img {
-    width: 40px;
-    height: 40px;
+    gap: 32px;
+    margin-right: 60px;
     
 }
+
+
+.lucide {
+    width: 40px;
+    height: 40px;
+    color: rgb(70, 51, 0);
+    stroke-width: 1.5;
+}
+
 
 
 
@@ -504,8 +508,8 @@ footer figcaption {
     font-size: 0.82rem;
 }
  footer img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
 }
 
 
