@@ -4,11 +4,37 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Galería Unsplash</title>
-        <link rel="stylesheet" href="css/styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Sacramento&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/styles.css" />
     </head>
     <body>
-        <div id="contador"></div>
+        <header>
+            <div class="header-izquierda">
+                <a href="#"><h1 id="logo">Naturgune</h1></a>
+                <nav>
+                    <ul>
+                        <li><a href="#" id="linkTodas">Todas</a></li>
+                        <li><a href="#" id="linkFavoritos">Favoritos</a></li>
+                        <li id="contador"></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
         <div id="contenedor"></div>
+
+        <div id="modal" class="oculto">
+            <span id="cerrarModal">✕</span>
+            <img id="modalImg" src="" alt="Foto ampliada" />
+        </div>
+
         <script src="js/main.js"></script>
     </body>
 </html>
